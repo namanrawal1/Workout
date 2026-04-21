@@ -64,6 +64,7 @@ const WorkoutTracker = () => {
         return updated;
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDay]);
 
   // Save to localStorage whenever progress changes
