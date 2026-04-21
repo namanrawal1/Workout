@@ -1,12 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { RotateCcw } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { RotateCcw, AlertCircle } from 'lucide-react';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, set, onValue, update } from 'firebase/database';
+
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyC8a_CqYSF8OmuyK_xN0jElC_y2Dm4oUpA",
+  authDomain: "workout-tracker-10833.firebaseapp.com",
+  databaseURL: "https://workout-tracker-10833-default-rtdb.firebaseio.com",
+  projectId: "workout-tracker-10833",
+  storageBucket: "workout-tracker-10833.firebasestorage.app",
+  messagingSenderId: "588081252653",
+  appId: "1:588081252653:web:37028f1d8a0959a725eba4",
+  measurementId: "G-VNMB0NF84Z"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
 const WorkoutTracker = () => {
   const [selectedDay, setSelectedDay] = useState('Day 1 - Push');
-  const [progress, setProgress] = useState(() => {
-    const saved = localStorage.getItem('workoutProgress');
-    return saved ? JSON.parse(saved) : {};
-  });
+  const [progress, setProgress] = useState({});
+  const [isConnected, setIsConnected] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+  const [userName, setUserName] = useState(localStorage.getItem('userName') || 'naman');
+  const [showNamePrompt, setShowNamePrompt] = useState(!localStorage.getItem('userName'));
+  const listenerRef = useRef(null);
 
   const workoutPlan = {
     'Day 1 - Push': [
@@ -49,37 +69,78 @@ const WorkoutTracker = () => {
     ],
   };
 
-  // Initialize day if not exists
+  // Initialize Firebase sync
   useEffect(() => {
-    if (!progress[selectedDay]) {
-      setProgress((prev) => {
-        const updated = {
-          ...prev,
-          [selectedDay]: workoutPlan[selectedDay].reduce((acc, exercise, idx) => {
-            acc[idx] = { naman: 0, akash: 0 };
-            return acc;
-          }, {}),
-        };
-        localStorage.setItem('workoutProgress', JSON.stringify(updated));
-        return updated;
+    if (!showNamePrompt && userName) {
+      const session = localStorage.getItem('sessionId') || 'default-session';
+      setSessionId(session);
+      localStorage.setItem('sessionId', session);
+
+      // Listen to Firebase for real-time updates
+      const progressRef = ref(database, `sessions/${session}/progress`);
+      listenerRef.current = onValue(progressRef, (snapshot) => {
+        if (snapshot.exists()) {
+          setProgress(snapshot.val());
+        }
+        setIsConnected(true);
+      }, (error) => {
+        console.error('Firebase error:', error);
+        setIsConnected(false);
       });
+
+      return () => {
+        if (listenerRef.current) {
+          listenerRef.current();
+        }
+      };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDay]);
+  }, [showNamePrompt, userName]);
 
-  // Save to localStorage whenever progress changes
-  useEffect(() => {
-    localStorage.setItem('workoutProgress', JSON.stringify(progress));
-  }, [progress]);
+  const setUserAndStart = (name) => {
+    localStorage.setItem('userName', name);
+    setUserName(name);
+    setShowNamePrompt(false);
+  };
+
+  const updateProgress = (day, exerciseIdx, person, newCount) => {
+    const newProgress = {
+      ...progress,
+      [day]: {
+        ...progress[day],
+        [exerciseIdx]: {
+          ...(progress[day]?.[exerciseIdx] || { naman: 0, akash: 0 }),
+          [person]: newCount,
+        },
+      },
+    };
+    setProgress(newProgress);
+
+    // Sync to Firebase
+    if (sessionId) {
+      update(ref(database, `sessions/${sessionId}`), {
+        progress: newProgress,
+        lastUpdated: new Date().toISOString(),
+      });
+    }
+  };
 
   const resetDay = () => {
-    setProgress((prev) => ({
-      ...prev,
+    const newProgress = {
+      ...progress,
       [selectedDay]: workoutPlan[selectedDay].reduce((acc, exercise, idx) => {
         acc[idx] = { naman: 0, akash: 0 };
         return acc;
       }, {}),
-    }));
+    };
+    setProgress(newProgress);
+
+    if (sessionId) {
+      update(ref(database, `sessions/${sessionId}`), {
+        progress: newProgress,
+        lastUpdated: new Date().toISOString(),
+      });
+    }
   };
 
   const getDayProgress = () => {
@@ -106,6 +167,33 @@ const WorkoutTracker = () => {
 
   const dayProgress = getDayProgress();
 
+  // Name prompt
+  if (showNamePrompt) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white flex items-center justify-center p-4">
+        <div className="bg-slate-700 rounded-xl p-8 border border-slate-600 max-w-md w-full">
+          <h2 className="text-3xl font-bold mb-4 text-center">Welcome! 💪</h2>
+          <p className="text-slate-300 mb-6 text-center">Who are you?</p>
+          
+          <div className="flex gap-4">
+            <button
+              onClick={() => setUserAndStart('naman')}
+              className="flex-1 bg-orange-600 hover:bg-orange-700 py-3 rounded-lg font-bold text-lg transition"
+            >
+              Naman
+            </button>
+            <button
+              onClick={() => setUserAndStart('akash')}
+              className="flex-1 bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-bold text-lg transition"
+            >
+              Akash
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-4">
       <div className="max-w-6xl mx-auto">
@@ -114,8 +202,23 @@ const WorkoutTracker = () => {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent mb-2">
             💪 Workout Set Tracker
           </h1>
-          <p className="text-slate-300">Track sets with Naman & Akash</p>
+          <p className="text-slate-300">
+            {userName === 'naman' ? '🟠 Naman' : '🔵 Akash'} - Real-time sync enabled
+          </p>
         </div>
+
+        {/* Connection Status */}
+        {isConnected ? (
+          <div className="bg-green-900/30 border border-green-500 rounded-xl p-4 mb-6 flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <p className="text-green-300 text-sm">Connected to Firebase ✓</p>
+          </div>
+        ) : (
+          <div className="bg-red-900/30 border border-red-500 rounded-xl p-4 mb-6 flex items-start gap-3">
+            <AlertCircle size={20} className="text-red-400 flex-shrink-0 mt-0.5" />
+            <p className="text-red-300 text-sm">Connecting to Firebase...</p>
+          </div>
+        )}
 
         {/* Day Selector */}
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-8">
@@ -216,19 +319,14 @@ const WorkoutTracker = () => {
                           <button
                             key={setIdx}
                             onClick={() =>
-                              setProgress((prev) => ({
-                                ...prev,
-                                [selectedDay]: {
-                                  ...prev[selectedDay],
-                                  [idx]: {
-                                    ...prev[selectedDay][idx],
-                                    naman:
-                                      exerciseProgress.naman === setIdx + 1
-                                        ? setIdx
-                                        : setIdx + 1,
-                                  },
-                                },
-                              }))
+                              updateProgress(
+                                selectedDay,
+                                idx,
+                                'naman',
+                                exerciseProgress.naman === setIdx + 1
+                                  ? setIdx
+                                  : setIdx + 1
+                              )
                             }
                             className={`w-10 h-10 rounded-lg font-bold transition-all ${
                               exerciseProgress.naman > setIdx
@@ -250,19 +348,14 @@ const WorkoutTracker = () => {
                           <button
                             key={setIdx}
                             onClick={() =>
-                              setProgress((prev) => ({
-                                ...prev,
-                                [selectedDay]: {
-                                  ...prev[selectedDay],
-                                  [idx]: {
-                                    ...prev[selectedDay][idx],
-                                    akash:
-                                      exerciseProgress.akash === setIdx + 1
-                                        ? setIdx
-                                        : setIdx + 1,
-                                  },
-                                },
-                              }))
+                              updateProgress(
+                                selectedDay,
+                                idx,
+                                'akash',
+                                exerciseProgress.akash === setIdx + 1
+                                  ? setIdx
+                                  : setIdx + 1
+                              )
                             }
                             className={`w-10 h-10 rounded-lg font-bold transition-all ${
                               exerciseProgress.akash > setIdx
@@ -284,8 +377,8 @@ const WorkoutTracker = () => {
 
         {/* Footer */}
         <div className="mt-12 text-center text-slate-400 text-sm">
-          <p>💾 Progress auto-saves to your device</p>
-          <p className="mt-2">Share this app with Akash to track workouts together!</p>
+          <p>🔄 Real-time sync with Firebase</p>
+          <p className="mt-2">Both devices see updates instantly!</p>
         </div>
       </div>
     </div>
