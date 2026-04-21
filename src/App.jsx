@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { RotateCcw } from 'lucide-react';
 
 const WorkoutTracker = () => {
+  const [selectedDay, setSelectedDay] = useState('Day 1 - Push');
+  const [progress, setProgress] = useState(() => {
+    const saved = localStorage.getItem('workoutProgress');
+    return saved ? JSON.parse(saved) : {};
+  });
+
   const workoutPlan = {
     'Day 1 - Push': [
       { name: 'Chest press machine', sets: 4, reps: '8,8,6,6', isSuperSet: false },
@@ -43,12 +49,6 @@ const WorkoutTracker = () => {
     ],
   };
 
-  const [selectedDay, setSelectedDay] = useState('Day 1 - Push');
-  const [progress, setProgress] = useState(() => {
-    const saved = localStorage.getItem('workoutProgress');
-    return saved ? JSON.parse(saved) : {};
-  });
-
   // Initialize day if not exists
   useEffect(() => {
     if (!progress[selectedDay]) {
@@ -64,7 +64,7 @@ const WorkoutTracker = () => {
         return updated;
       });
     }
-  }, [selectedDay, progress]);
+  }, [selectedDay]);
 
   // Save to localStorage whenever progress changes
   useEffect(() => {
