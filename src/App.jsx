@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Check, RotateCcw, Calendar } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 
 const WorkoutTracker = () => {
   const workoutPlan = {
@@ -64,28 +64,14 @@ const WorkoutTracker = () => {
         return updated;
       });
     }
-  }, [selectedDay]);
+  }, [selectedDay, progress, workoutPlan]);
 
   // Save to localStorage whenever progress changes
   useEffect(() => {
     localStorage.setItem('workoutProgress', JSON.stringify(progress));
   }, [progress]);
 
-  const toggleSet = (exerciseIndex, person) => {
-    const currentSets = progress[selectedDay]?.[exerciseIndex]?.[person] || 0;
-    const totalSets = workoutPlan[selectedDay][exerciseIndex].sets;
-    const newCount = (currentSets + 1) % (totalSets + 1);
 
-    setProgress((prev) => ({
-      ...prev,
-      [selectedDay]: {
-        ...prev[selectedDay],
-        [exerciseIndex]: {
-          ...prev[selectedDay][exerciseIndex],
-          [person]: newCount,
-        },
-      },
-    }));
   };
 
   const resetDay = () => {
