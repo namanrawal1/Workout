@@ -64,15 +64,12 @@ const WorkoutTracker = () => {
         return updated;
       });
     }
-  }, [selectedDay, progress, workoutPlan]);
+  }, [selectedDay]);
 
   // Save to localStorage whenever progress changes
   useEffect(() => {
     localStorage.setItem('workoutProgress', JSON.stringify(progress));
   }, [progress]);
-
-
-  };
 
   const resetDay = () => {
     setProgress((prev) => ({
@@ -110,8 +107,8 @@ const WorkoutTracker = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-4">
-      {/* Header */}
       <div className="max-w-6xl mx-auto">
+        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent mb-2">
             💪 Workout Set Tracker
