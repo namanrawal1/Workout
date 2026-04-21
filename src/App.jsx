@@ -64,7 +64,7 @@ const WorkoutTracker = () => {
         return updated;
       });
     }
-  }, [selectedDay, progress, workoutPlan]);
+  }, [selectedDay, progress]);
 
   // Save to localStorage whenever progress changes
   useEffect(() => {
