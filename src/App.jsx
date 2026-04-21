@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { RotateCcw, AlertCircle } from 'lucide-react';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set, onValue, update } from 'firebase/database';
+import { getDatabase, ref, onValue, update } from 'firebase/database';
 
 // Firebase Configuration
 const firebaseConfig = {
