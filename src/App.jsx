@@ -200,7 +200,7 @@ const WorkoutTracker = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent mb-2">
-            💪 Workout Set Tracker
+            💪 Workout Set Tracker - Updated
           </h1>
           <p className="text-slate-300">
             {userName === 'naman' ? '🟠 Naman' : '🔵 Akash'} - Real-time sync enabled
