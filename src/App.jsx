@@ -629,7 +629,7 @@ const WorkoutTracker = () => {
                     <button
                       onClick={() => updateCardio('naman', 0)}
                       className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('naman') === 0 || getCardioData('naman') === null
+                        getCardioData('naman') === 0
                           ? 'bg-black text-white'
                           : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
@@ -638,12 +638,12 @@ const WorkoutTracker = () => {
                     </button>
                     <button
                       onClick={() => {
-                        if (getCardioData('naman') === 0 || getCardioData('naman') === null) {
+                        if (getCardioData('naman') === 0) {
                           updateCardio('naman', '');
                         }
                       }}
                       className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('naman') && getCardioData('naman') !== 0
+                        getCardioData('naman') !== 0 && getCardioData('naman') !== ''
                           ? 'bg-black text-white'
                           : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
@@ -652,16 +652,16 @@ const WorkoutTracker = () => {
                     </button>
                   </div>
                   
-                  {getCardioData('naman') > 0 && (
+                  {getCardioData('naman') !== 0 && (
                     <div>
                       <input
                         type="number"
                         value={getCardioData('naman') || ''}
-                        onChange={(e) => updateCardio('naman', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updateCardio('naman', parseInt(e.target.value) || '')}
                         placeholder="Minutes"
                         className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
                       />
-                      {getCardioData('naman') > 0 && (
+                      {getCardioData('naman') && (
                         <p className="text-gray-600 font-medium mt-2 text-center">{getCardioData('naman')} min</p>
                       )}
                     </div>
@@ -674,7 +674,7 @@ const WorkoutTracker = () => {
                     <button
                       onClick={() => updateCardio('akash', 0)}
                       className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('akash') === 0 || getCardioData('akash') === null
+                        getCardioData('akash') === 0
                           ? 'bg-black text-white'
                           : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
@@ -683,12 +683,12 @@ const WorkoutTracker = () => {
                     </button>
                     <button
                       onClick={() => {
-                        if (getCardioData('akash') === 0 || getCardioData('akash') === null) {
+                        if (getCardioData('akash') === 0) {
                           updateCardio('akash', '');
                         }
                       }}
                       className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('akash') && getCardioData('akash') !== 0
+                        getCardioData('akash') !== 0 && getCardioData('akash') !== ''
                           ? 'bg-black text-white'
                           : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
@@ -697,16 +697,16 @@ const WorkoutTracker = () => {
                     </button>
                   </div>
                   
-                  {getCardioData('akash') > 0 && (
+                  {getCardioData('akash') !== 0 && (
                     <div>
                       <input
                         type="number"
                         value={getCardioData('akash') || ''}
-                        onChange={(e) => updateCardio('akash', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updateCardio('akash', parseInt(e.target.value) || '')}
                         placeholder="Minutes"
                         className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
                       />
-                      {getCardioData('akash') > 0 && (
+                      {getCardioData('akash') && (
                         <p className="text-gray-600 font-medium mt-2 text-center">{getCardioData('akash')} min</p>
                       )}
                     </div>
