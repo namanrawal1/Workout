@@ -159,13 +159,13 @@ const WorkoutTracker = () => {
     }
   };
 
-  const updateCardio = (person, duration) => {
+  const updateCardio = (person, minutes) => {
     const today = getTodayDateString();
     const key = `${today}-${selectedDay}-${person}`;
     
     const newCardio = {
       ...cardio,
-      [key]: duration || duration === 0 ? duration : null,
+      [key]: minutes === '' || minutes === null ? null : minutes,
     };
     setCardio(newCardio);
 
@@ -180,7 +180,7 @@ const WorkoutTracker = () => {
   const getCardioData = (person) => {
     const today = getTodayDateString();
     const key = `${today}-${selectedDay}-${person}`;
-    return cardio[key] !== undefined ? cardio[key] : 0;
+    return cardio[key] || null;
   };
 
   const resetDay = () => {
@@ -397,11 +397,11 @@ const WorkoutTracker = () => {
 
         {/* Tracker Tab */}
         {activeTab === 'tracker' && (
-          <div className="px-4 py-8">
+          <div className="px-4 py-6 pb-12">
             {/* Day Selector */}
-            <div className="mb-8">
-              <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Select Day</p>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <div className="mb-10">
+              <p className="text-xs text-gray-600 font-medium mb-6 uppercase tracking-wider">Select Day</p>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                 {days.map((day) => (
                   <button
                     key={day}
@@ -419,43 +419,43 @@ const WorkoutTracker = () => {
             </div>
 
             {/* Progress Overview */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-                <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Naman</p>
-                <p className="text-3xl font-thin mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+                <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Naman</p>
+                <p className="text-4xl font-thin mb-6">
                   {dayProgress.namanSets}/{dayProgress.total}
                 </p>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
                   <div
                     className="bg-black h-2 rounded-full transition-all"
                     style={{ width: `${dayProgress.naman}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-600 mt-3">{dayProgress.naman}% complete</p>
+                <p className="text-xs text-gray-600">{dayProgress.naman}% complete</p>
               </div>
 
-              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-                <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Akash</p>
-                <p className="text-3xl font-thin mb-4">
+              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+                <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Akash</p>
+                <p className="text-4xl font-thin mb-6">
                   {dayProgress.akashSets}/{dayProgress.total}
                 </p>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
                   <div
                     className="bg-black h-2 rounded-full transition-all"
                     style={{ width: `${dayProgress.akash}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-600 mt-3">{dayProgress.akash}% complete</p>
+                <p className="text-xs text-gray-600">{dayProgress.akash}% complete</p>
               </div>
 
-              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 flex flex-col justify-between">
+              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200 flex flex-col justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Total Sets</p>
-                  <p className="text-3xl font-thin">{dayProgress.total}</p>
+                  <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Total Sets</p>
+                  <p className="text-4xl font-thin mb-8">{dayProgress.total}</p>
                 </div>
                 <button
                   onClick={resetDay}
-                  className="mt-4 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition"
+                  className="bg-gray-200 hover:bg-gray-300 px-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition"
                 >
                   <RotateCcw size={16} /> Reset
                 </button>
@@ -463,7 +463,7 @@ const WorkoutTracker = () => {
             </div>
 
             {/* Exercise List */}
-            <div className="space-y-3 mb-8">
+            <div className="space-y-5 mb-12">
               {workoutPlan[selectedDay].map((exercise, idx) => {
                 const exerciseProgress = progress[selectedDay]?.[idx] || {
                   naman: 0,
@@ -485,9 +485,9 @@ const WorkoutTracker = () => {
                       className="p-6 cursor-pointer hover:bg-white/50"
                       onClick={() => setExpandedExercise(isExpanded ? null : idx)}
                     >
-                      <div className="flex justify-between items-start">
+                      <div className="flex justify-between items-start mb-6">
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-base font-medium text-black mb-1">
+                          <h3 className="text-base font-medium text-black mb-2">
                             {exercise.name}
                           </h3>
                           <p className="text-sm text-gray-600">
@@ -503,10 +503,10 @@ const WorkoutTracker = () => {
                         </div>
                       </div>
 
-                      <div className="mt-4 flex gap-8">
+                      <div className="flex gap-12">
                         <div>
-                          <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Naman</p>
-                          <div className="flex gap-2 flex-wrap">
+                          <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Naman</p>
+                          <div className="flex gap-3 flex-wrap">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => (
                               <button
                                 key={setIdx}
@@ -521,7 +521,7 @@ const WorkoutTracker = () => {
                                       : setIdx + 1
                                   );
                                 }}
-                                className={`w-9 h-9 rounded-lg font-medium transition text-sm ${
+                                className={`w-10 h-10 rounded-lg font-medium transition text-sm ${
                                   exerciseProgress.naman > setIdx
                                     ? 'bg-black text-white'
                                     : 'bg-white border border-gray-300 text-gray-600 hover:border-gray-400'
@@ -534,8 +534,8 @@ const WorkoutTracker = () => {
                         </div>
 
                         <div>
-                          <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Akash</p>
-                          <div className="flex gap-2 flex-wrap">
+                          <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Akash</p>
+                          <div className="flex gap-3 flex-wrap">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => (
                               <button
                                 key={setIdx}
@@ -550,7 +550,7 @@ const WorkoutTracker = () => {
                                       : setIdx + 1
                                   );
                                 }}
-                                className={`w-9 h-9 rounded-lg font-medium transition text-sm ${
+                                className={`w-10 h-10 rounded-lg font-medium transition text-sm ${
                                   exerciseProgress.akash > setIdx
                                     ? 'bg-black text-white'
                                     : 'bg-white border border-gray-300 text-gray-600 hover:border-gray-400'
@@ -565,23 +565,23 @@ const WorkoutTracker = () => {
                     </div>
 
                     {isExpanded && (
-                      <div className="border-t border-gray-200 p-6 bg-white space-y-4">
+                      <div className="border-t border-gray-200 p-8 bg-white space-y-8">
                         <div>
-                          <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Naman - Weight per Set</p>
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                          <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Naman - Weight per Set</p>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => {
                               const weightKey = `${today}-${selectedDay}-${idx}-naman-set${setIdx}`;
                               const weight = setWeights[weightKey] || '';
                               
                               return (
                                 <div key={setIdx} className="flex items-center gap-2">
-                                  <span className="text-xs text-gray-600 w-6">S{setIdx + 1}:</span>
+                                  <span className="text-xs text-gray-600 w-8 font-medium">S{setIdx + 1}:</span>
                                   <input
                                     type="number"
                                     value={weight}
                                     onChange={(e) => updateSetWeight(selectedDay, idx, 'naman', setIdx, e.target.value)}
                                     placeholder="kg"
-                                    className="flex-1 bg-white border border-gray-300 rounded-lg px-2 py-1 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
+                                    className="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
                                   />
                                 </div>
                               );
@@ -590,21 +590,21 @@ const WorkoutTracker = () => {
                         </div>
 
                         <div>
-                          <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Akash - Weight per Set</p>
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                          <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Akash - Weight per Set</p>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => {
                               const weightKey = `${today}-${selectedDay}-${idx}-akash-set${setIdx}`;
                               const weight = setWeights[weightKey] || '';
                               
                               return (
                                 <div key={setIdx} className="flex items-center gap-2">
-                                  <span className="text-xs text-gray-600 w-6">S{setIdx + 1}:</span>
+                                  <span className="text-xs text-gray-600 w-8 font-medium">S{setIdx + 1}:</span>
                                   <input
                                     type="number"
                                     value={weight}
                                     onChange={(e) => updateSetWeight(selectedDay, idx, 'akash', setIdx, e.target.value)}
                                     placeholder="kg"
-                                    className="flex-1 bg-white border border-gray-300 rounded-lg px-2 py-1 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
+                                    className="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
                                   />
                                 </div>
                               );
@@ -619,98 +619,42 @@ const WorkoutTracker = () => {
             </div>
 
             {/* Cardio Section */}
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-              <h3 className="text-base font-medium text-black mb-6">Cardio</h3>
+            <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+              <h3 className="text-base font-medium text-black mb-8">Cardio</h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div>
-                  <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Naman</p>
-                  <div className="flex gap-2 mb-4">
-                    <button
-                      onClick={() => updateCardio('naman', 0)}
-                      className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('naman') === 0
-                          ? 'bg-black text-white'
-                          : 'bg-white border border-gray-300 text-black hover:border-gray-400'
-                      }`}
-                    >
-                      Skip
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (getCardioData('naman') === 0) {
-                          updateCardio('naman', '');
-                        }
-                      }}
-                      className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('naman') !== 0 && getCardioData('naman') !== ''
-                          ? 'bg-black text-white'
-                          : 'bg-white border border-gray-300 text-black hover:border-gray-400'
-                      }`}
-                    >
-                      Done
-                    </button>
+                  <p className="text-xs text-gray-600 font-medium mb-5 uppercase tracking-wider">Naman</p>
+                  <div>
+                    <label className="text-xs text-gray-600 font-medium uppercase tracking-wider block mb-3">Minutes</label>
+                    <input
+                      type="number"
+                      value={getCardioData('naman') || ''}
+                      onChange={(e) => updateCardio('naman', e.target.value ? parseInt(e.target.value) : null)}
+                      placeholder="Enter minutes (or leave blank for skip)"
+                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
+                    />
+                    {getCardioData('naman') && (
+                      <p className="text-gray-600 font-medium mt-3 text-center text-lg">{getCardioData('naman')} min</p>
+                    )}
                   </div>
-                  
-                  {getCardioData('naman') !== 0 && (
-                    <div>
-                      <input
-                        type="number"
-                        value={getCardioData('naman') || ''}
-                        onChange={(e) => updateCardio('naman', parseInt(e.target.value) || '')}
-                        placeholder="Minutes"
-                        className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
-                      />
-                      {getCardioData('naman') && (
-                        <p className="text-gray-600 font-medium mt-2 text-center">{getCardioData('naman')} min</p>
-                      )}
-                    </div>
-                  )}
                 </div>
 
                 <div>
-                  <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Akash</p>
-                  <div className="flex gap-2 mb-4">
-                    <button
-                      onClick={() => updateCardio('akash', 0)}
-                      className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('akash') === 0
-                          ? 'bg-black text-white'
-                          : 'bg-white border border-gray-300 text-black hover:border-gray-400'
-                      }`}
-                    >
-                      Skip
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (getCardioData('akash') === 0) {
-                          updateCardio('akash', '');
-                        }
-                      }}
-                      className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('akash') !== 0 && getCardioData('akash') !== ''
-                          ? 'bg-black text-white'
-                          : 'bg-white border border-gray-300 text-black hover:border-gray-400'
-                      }`}
-                    >
-                      Done
-                    </button>
+                  <p className="text-xs text-gray-600 font-medium mb-5 uppercase tracking-wider">Akash</p>
+                  <div>
+                    <label className="text-xs text-gray-600 font-medium uppercase tracking-wider block mb-3">Minutes</label>
+                    <input
+                      type="number"
+                      value={getCardioData('akash') || ''}
+                      onChange={(e) => updateCardio('akash', e.target.value ? parseInt(e.target.value) : null)}
+                      placeholder="Enter minutes (or leave blank for skip)"
+                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
+                    />
+                    {getCardioData('akash') && (
+                      <p className="text-gray-600 font-medium mt-3 text-center text-lg">{getCardioData('akash')} min</p>
+                    )}
                   </div>
-                  
-                  {getCardioData('akash') !== 0 && (
-                    <div>
-                      <input
-                        type="number"
-                        value={getCardioData('akash') || ''}
-                        onChange={(e) => updateCardio('akash', parseInt(e.target.value) || '')}
-                        placeholder="Minutes"
-                        className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
-                      />
-                      {getCardioData('akash') && (
-                        <p className="text-gray-600 font-medium mt-2 text-center">{getCardioData('akash')} min</p>
-                      )}
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
