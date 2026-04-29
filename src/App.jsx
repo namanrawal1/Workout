@@ -478,8 +478,8 @@ const WorkoutTracker = () => {
 
                       <div className="flex gap-12">
                         <div>
-                          <p className="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Naman</p>
-                          <div className="flex gap-3 flex-wrap">
+                          <p className="text-xs text-gray-400 font-medium mb-3 uppercase tracking-wider">Naman</p>
+                          <div className="flex gap-2 flex-wrap">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => (
                               <button
                                 key={setIdx}
@@ -494,7 +494,7 @@ const WorkoutTracker = () => {
                                       : setIdx + 1
                                   );
                                 }}
-                                className={`w-10 h-10 rounded-lg font-medium transition text-sm ${
+                                className={`w-8 h-8 rounded-md font-semibold transition text-xs ${
                                   exerciseProgress.naman > setIdx
                                     ? 'bg-white text-black'
                                     : 'bg-gray-800 border border-gray-700 text-gray-400 hover:border-gray-600'
@@ -507,8 +507,8 @@ const WorkoutTracker = () => {
                         </div>
 
                         <div>
-                          <p className="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Akash</p>
-                          <div className="flex gap-3 flex-wrap">
+                          <p className="text-xs text-gray-400 font-medium mb-3 uppercase tracking-wider">Akash</p>
+                          <div className="flex gap-2 flex-wrap">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => (
                               <button
                                 key={setIdx}
@@ -523,7 +523,7 @@ const WorkoutTracker = () => {
                                       : setIdx + 1
                                   );
                                 }}
-                                className={`w-10 h-10 rounded-lg font-medium transition text-sm ${
+                                className={`w-8 h-8 rounded-md font-semibold transition text-xs ${
                                   exerciseProgress.akash > setIdx
                                     ? 'bg-white text-black'
                                     : 'bg-gray-800 border border-gray-700 text-gray-400 hover:border-gray-600'
