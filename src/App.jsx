@@ -227,16 +227,14 @@ const WorkoutTracker = () => {
     const weekLog = [];
     const today = new Date();
 
-    // Get last 5 days
+    // Map each of the last 5 days to consecutive workout days
     for (let i = 4; i >= 0; i--) {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
       
-      // Determine which day this date should be
-      // We cycle through the 5 workout days
-      const dayOfWeek = date.getDay();
-      const dayIndex = (dayOfWeek + 4) % 5; // Map Sunday(0) to Friday(4) cycle
+      // Simply map to days in order: Day 1, Day 2, Day 3, Day 4, Day 5, Day 1, Day 2...
+      const dayIndex = (5 - i - 1) % 5;
       const day = days[dayIndex];
 
       let namanSets = 0, akashSets = 0, totalSets = 0;
@@ -624,46 +622,8 @@ const WorkoutTracker = () => {
               })}
             </div>
 
-            {/* Cardio Section */}
-            <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
-              <h3 className="text-base font-medium text-black mb-8">Cardio</h3>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                <div>
-                  <p className="text-xs text-gray-600 font-medium mb-5 uppercase tracking-wider">Naman</p>
-                  <div>
-                    <label className="text-xs text-gray-600 font-medium uppercase tracking-wider block mb-3">Minutes</label>
-                    <input
-                      type="number"
-                      value={getCardioData('naman') || ''}
-                      onChange={(e) => updateCardio('naman', e.target.value ? parseInt(e.target.value) : null)}
-                      placeholder="Enter minutes (or leave blank for skip)"
-                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
-                    />
-                    {getCardioData('naman') && (
-                      <p className="text-gray-600 font-medium mt-3 text-center text-lg">{getCardioData('naman')} min</p>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-600 font-medium mb-5 uppercase tracking-wider">Akash</p>
-                  <div>
-                    <label className="text-xs text-gray-600 font-medium uppercase tracking-wider block mb-3">Minutes</label>
-                    <input
-                      type="number"
-                      value={getCardioData('akash') || ''}
-                      onChange={(e) => updateCardio('akash', e.target.value ? parseInt(e.target.value) : null)}
-                      placeholder="Enter minutes (or leave blank for skip)"
-                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
-                    />
-                    {getCardioData('akash') && (
-                      <p className="text-gray-600 font-medium mt-3 text-center text-lg">{getCardioData('akash')} min</p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Cardio Section - REMOVED */}
+            {/* Cardio functionality removed as requested */}
           </div>
         )}
 
