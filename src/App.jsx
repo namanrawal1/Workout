@@ -305,31 +305,31 @@ const WorkoutTracker = () => {
   // Name prompt
   if (showNamePrompt) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-white text-black flex items-center justify-center p-4 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-          <div className="absolute top-0 right-0 w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{animationDelay: '4s'}}></div>
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+          <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
         </div>
 
-        <div className="bg-gradient-to-br from-slate-800/50 to-purple-800/50 backdrop-blur-md rounded-2xl p-8 border border-purple-500/30 max-w-md w-full relative z-10 shadow-2xl">
-          <h2 className="text-4xl font-bold mb-2 text-center bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Workout Tracker
-          </h2>
-          <p className="text-center text-slate-300 mb-8">Who are you?</p>
+        <div className="max-w-md w-full relative z-10">
+          <div className="text-center mb-12">
+            <h1 className="text-5xl font-thin mb-2 tracking-tight">Workout</h1>
+            <p className="text-gray-600 text-lg font-light">Track your progress</p>
+          </div>
           
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-4">
             <button
               onClick={() => setUserAndStart('naman')}
-              className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 py-4 rounded-lg font-bold text-lg transition transform hover:scale-105 shadow-lg"
+              className="w-full bg-black hover:bg-gray-900 text-white py-4 rounded-xl font-medium transition duration-200"
             >
-              Naman
+              Continue as Naman
             </button>
             <button
               onClick={() => setUserAndStart('akash')}
-              className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 py-4 rounded-lg font-bold text-lg transition transform hover:scale-105 shadow-lg"
+              className="w-full bg-gray-200 hover:bg-gray-300 text-black py-4 rounded-xl font-medium transition duration-200"
             >
-              Akash
+              Continue as Akash
             </button>
           </div>
         </div>
@@ -338,58 +338,56 @@ const WorkoutTracker = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-white text-black relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-pulse"></div>
-        <div className="absolute top-1/3 right-0 w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-pulse" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-pulse" style={{animationDelay: '4s'}}></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between pt-8 pb-6 px-4 border-b border-gray-200">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Workout Tracker
-            </h1>
-            <p className="text-slate-300 text-sm">
-              {userName === 'naman' ? '🟠 Naman' : '🔵 Akash'}
+            <h1 className="text-3xl font-thin tracking-tight">Workout Tracker</h1>
+            <p className="text-gray-600 text-sm mt-1">
+              {userName === 'naman' ? 'Welcome, Naman' : 'Welcome, Akash'}
             </p>
           </div>
           <button
             onClick={logout}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition transform hover:scale-105 shadow-lg"
+            className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 hover:bg-gray-300 transition"
           >
-            <LogOut size={16} /> Switch
+            Switch
           </button>
         </div>
 
         {/* Connection Status */}
         {isConnected ? (
-          <div className="bg-green-500/10 border border-green-500/50 rounded-lg p-3 mb-6 flex items-center gap-2">
+          <div className="mx-4 mt-6 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <p className="text-green-300 text-sm">Connected ✓</p>
+            <p className="text-green-800 text-sm font-medium">Synced</p>
           </div>
         ) : (
-          <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3 mb-6 flex items-start gap-2">
-            <AlertCircle size={16} className="text-red-400 flex-shrink-0 mt-0.5" />
-            <p className="text-red-300 text-sm">Connecting...</p>
+          <div className="mx-4 mt-6 p-3 bg-orange-50 border border-orange-200 rounded-lg flex items-start gap-2">
+            <AlertCircle size={16} className="text-orange-600 flex-shrink-0 mt-0.5" />
+            <p className="text-orange-800 text-sm font-medium">Connecting...</p>
           </div>
         )}
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-8 overflow-x-auto">
+        <div className="flex gap-8 px-4 mt-8 border-b border-gray-200">
           {[
-            { id: 'tracker', label: 'Tracker' },
-            { id: 'weekly', label: 'Weekly Log' },
+            { id: 'tracker', label: 'Today' },
+            { id: 'weekly', label: 'Weekly' },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition ${
+              className={`py-3 font-medium text-sm transition border-b-2 -mb-px ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg'
-                  : 'bg-slate-700/50 hover:bg-slate-700'
+                  ? 'border-black text-black'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
               {tab.label}
@@ -399,62 +397,65 @@ const WorkoutTracker = () => {
 
         {/* Tracker Tab */}
         {activeTab === 'tracker' && (
-          <>
+          <div className="px-4 py-8">
             {/* Day Selector */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-8">
-              {days.map((day) => (
-                <button
-                  key={day}
-                  onClick={() => setSelectedDay(day)}
-                  className={`py-3 px-3 rounded-lg font-semibold transition-all text-sm sm:text-base ${
-                    selectedDay === day
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg'
-                      : 'bg-slate-700/50 hover:bg-slate-700'
-                  }`}
-                >
-                  {day.split(' - ')[0]}
-                </button>
-              ))}
+            <div className="mb-8">
+              <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Select Day</p>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                {days.map((day) => (
+                  <button
+                    key={day}
+                    onClick={() => setSelectedDay(day)}
+                    className={`py-3 px-3 rounded-lg font-medium transition text-sm ${
+                      selectedDay === day
+                        ? 'bg-black text-white'
+                        : 'bg-gray-100 text-black hover:bg-gray-200'
+                    }`}
+                  >
+                    {day.split(' - ')[0]}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Progress Overview */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <div className="bg-slate-800/50 backdrop-blur rounded-xl p-6 border border-purple-500/30">
-                <p className="text-slate-300 text-sm mb-2">Naman</p>
-                <p className="text-3xl font-bold text-orange-400">
+              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+                <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Naman</p>
+                <p className="text-3xl font-thin mb-4">
                   {dayProgress.namanSets}/{dayProgress.total}
                 </p>
-                <div className="mt-3 bg-slate-700 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
-                    className="bg-gradient-to-r from-orange-400 to-red-500 h-2 rounded-full transition-all"
+                    className="bg-black h-2 rounded-full transition-all"
                     style={{ width: `${dayProgress.naman}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-slate-400 mt-2">{dayProgress.naman}%</p>
+                <p className="text-xs text-gray-600 mt-3">{dayProgress.naman}% complete</p>
               </div>
 
-              <div className="bg-slate-800/50 backdrop-blur rounded-xl p-6 border border-purple-500/30">
-                <p className="text-slate-300 text-sm mb-2">Akash</p>
-                <p className="text-3xl font-bold text-blue-400">
+              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+                <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Akash</p>
+                <p className="text-3xl font-thin mb-4">
                   {dayProgress.akashSets}/{dayProgress.total}
                 </p>
-                <div className="mt-3 bg-slate-700 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
-                    className="bg-gradient-to-r from-blue-400 to-cyan-500 h-2 rounded-full transition-all"
+                    className="bg-black h-2 rounded-full transition-all"
                     style={{ width: `${dayProgress.akash}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-slate-400 mt-2">{dayProgress.akash}%</p>
+                <p className="text-xs text-gray-600 mt-3">{dayProgress.akash}% complete</p>
               </div>
 
-              <div className="bg-slate-800/50 backdrop-blur rounded-xl p-6 border border-purple-500/30 flex flex-col justify-between">
+              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 flex flex-col justify-between">
                 <div>
-                  <p className="text-slate-300 text-sm mb-2">Total Sets</p>
-                  <p className="text-3xl font-bold text-purple-400">{dayProgress.total}</p>
+                  <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Total Sets</p>
+                  <p className="text-3xl font-thin">{dayProgress.total}</p>
                 </div>
                 <button
                   onClick={resetDay}
-                  className="mt-4 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 w-full py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition"
+                  className="mt-4 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition"
                 >
                   <RotateCcw size={16} /> Reset
                 </button>
@@ -462,7 +463,7 @@ const WorkoutTracker = () => {
             </div>
 
             {/* Exercise List */}
-            <div className="space-y-4 mb-8">
+            <div className="space-y-3 mb-8">
               {workoutPlan[selectedDay].map((exercise, idx) => {
                 const exerciseProgress = progress[selectedDay]?.[idx] || {
                   naman: 0,
@@ -474,37 +475,37 @@ const WorkoutTracker = () => {
                 return (
                   <div
                     key={idx}
-                    className={`rounded-xl backdrop-blur transition ${
+                    className={`rounded-2xl border transition ${
                       exercise.isSuperSet
-                        ? 'bg-slate-800/50 border-2 border-yellow-500/50'
-                        : 'bg-slate-800/50 border border-slate-700/50'
+                        ? 'bg-gray-50 border-gray-300'
+                        : 'bg-gray-50 border-gray-200'
                     }`}
                   >
                     <div 
-                      className="p-6 cursor-pointer hover:bg-slate-700/30"
+                      className="p-6 cursor-pointer hover:bg-white/50"
                       onClick={() => setExpandedExercise(isExpanded ? null : idx)}
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-lg font-semibold text-white mb-1">
+                          <h3 className="text-base font-medium text-black mb-1">
                             {exercise.name}
                           </h3>
-                          <p className="text-sm text-slate-400">
+                          <p className="text-sm text-gray-600">
                             {exercise.sets} sets × {exercise.reps} reps
                           </p>
                         </div>
                         <div className="ml-4">
                           {isExpanded ? (
-                            <ChevronUp className="text-slate-400" />
+                            <ChevronUp className="text-gray-400" />
                           ) : (
-                            <ChevronDown className="text-slate-400" />
+                            <ChevronDown className="text-gray-400" />
                           )}
                         </div>
                       </div>
 
                       <div className="mt-4 flex gap-8">
                         <div>
-                          <p className="text-xs font-semibold text-orange-400 mb-2">Naman</p>
+                          <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Naman</p>
                           <div className="flex gap-2 flex-wrap">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => (
                               <button
@@ -520,10 +521,10 @@ const WorkoutTracker = () => {
                                       : setIdx + 1
                                   );
                                 }}
-                                className={`w-10 h-10 rounded-lg font-bold transition-all text-sm ${
+                                className={`w-9 h-9 rounded-lg font-medium transition text-sm ${
                                   exerciseProgress.naman > setIdx
-                                    ? 'bg-gradient-to-br from-orange-500 to-red-600 shadow-lg'
-                                    : 'bg-slate-700 text-slate-400 hover:bg-slate-600'
+                                    ? 'bg-black text-white'
+                                    : 'bg-white border border-gray-300 text-gray-600 hover:border-gray-400'
                                 }`}
                               >
                                 {setIdx + 1}
@@ -533,7 +534,7 @@ const WorkoutTracker = () => {
                         </div>
 
                         <div>
-                          <p className="text-xs font-semibold text-blue-400 mb-2">Akash</p>
+                          <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Akash</p>
                           <div className="flex gap-2 flex-wrap">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => (
                               <button
@@ -549,10 +550,10 @@ const WorkoutTracker = () => {
                                       : setIdx + 1
                                   );
                                 }}
-                                className={`w-10 h-10 rounded-lg font-bold transition-all text-sm ${
+                                className={`w-9 h-9 rounded-lg font-medium transition text-sm ${
                                   exerciseProgress.akash > setIdx
-                                    ? 'bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg'
-                                    : 'bg-slate-700 text-slate-400 hover:bg-slate-600'
+                                    ? 'bg-black text-white'
+                                    : 'bg-white border border-gray-300 text-gray-600 hover:border-gray-400'
                                 }`}
                               >
                                 {setIdx + 1}
@@ -564,9 +565,9 @@ const WorkoutTracker = () => {
                     </div>
 
                     {isExpanded && (
-                      <div className="border-t border-slate-700/50 p-6 bg-slate-900/50 space-y-4">
+                      <div className="border-t border-gray-200 p-6 bg-white space-y-4">
                         <div>
-                          <p className="text-sm font-semibold text-orange-400 mb-3">Naman - Weight per Set</p>
+                          <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Naman - Weight per Set</p>
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => {
                               const weightKey = `${today}-${selectedDay}-${idx}-naman-set${setIdx}`;
@@ -574,13 +575,13 @@ const WorkoutTracker = () => {
                               
                               return (
                                 <div key={setIdx} className="flex items-center gap-2">
-                                  <span className="text-xs text-slate-400 w-6">S{setIdx + 1}:</span>
+                                  <span className="text-xs text-gray-600 w-6">S{setIdx + 1}:</span>
                                   <input
                                     type="number"
                                     value={weight}
                                     onChange={(e) => updateSetWeight(selectedDay, idx, 'naman', setIdx, e.target.value)}
                                     placeholder="kg"
-                                    className="flex-1 bg-slate-700/50 border border-slate-600 rounded px-2 py-1 text-white placeholder-slate-400 focus:outline-none focus:border-orange-400 text-sm"
+                                    className="flex-1 bg-white border border-gray-300 rounded-lg px-2 py-1 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
                                   />
                                 </div>
                               );
@@ -589,7 +590,7 @@ const WorkoutTracker = () => {
                         </div>
 
                         <div>
-                          <p className="text-sm font-semibold text-blue-400 mb-3">Akash - Weight per Set</p>
+                          <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Akash - Weight per Set</p>
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => {
                               const weightKey = `${today}-${selectedDay}-${idx}-akash-set${setIdx}`;
@@ -597,13 +598,13 @@ const WorkoutTracker = () => {
                               
                               return (
                                 <div key={setIdx} className="flex items-center gap-2">
-                                  <span className="text-xs text-slate-400 w-6">S{setIdx + 1}:</span>
+                                  <span className="text-xs text-gray-600 w-6">S{setIdx + 1}:</span>
                                   <input
                                     type="number"
                                     value={weight}
                                     onChange={(e) => updateSetWeight(selectedDay, idx, 'akash', setIdx, e.target.value)}
                                     placeholder="kg"
-                                    className="flex-1 bg-slate-700/50 border border-slate-600 rounded px-2 py-1 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 text-sm"
+                                    className="flex-1 bg-white border border-gray-300 rounded-lg px-2 py-1 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
                                   />
                                 </div>
                               );
@@ -618,32 +619,32 @@ const WorkoutTracker = () => {
             </div>
 
             {/* Cardio Section */}
-            <div className="bg-slate-800/50 backdrop-blur rounded-xl p-6 border border-slate-700/50">
-              <h3 className="text-lg font-bold text-white mb-6">Cardio</h3>
+            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+              <h3 className="text-base font-medium text-black mb-6">Cardio</h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div>
-                  <p className="text-sm font-semibold text-orange-400 mb-4">Naman</p>
+                  <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Naman</p>
                   <div className="flex gap-2 mb-4">
                     <button
                       onClick={() => updateCardio('naman', 0)}
-                      className={`flex-1 py-3 rounded-lg font-bold transition ${
+                      className={`flex-1 py-3 rounded-lg font-medium transition ${
                         getCardioData('naman') === 0
-                          ? 'bg-red-600'
-                          : 'bg-slate-700 hover:bg-slate-600'
+                          ? 'bg-black text-white'
+                          : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
                     >
-                      No
+                      Skip
                     </button>
                     <button
                       onClick={() => updateCardio('naman', 1)}
-                      className={`flex-1 py-3 rounded-lg font-bold transition ${
+                      className={`flex-1 py-3 rounded-lg font-medium transition ${
                         getCardioData('naman') > 0
-                          ? 'bg-green-600'
-                          : 'bg-slate-700 hover:bg-slate-600'
+                          ? 'bg-black text-white'
+                          : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
                     >
-                      Yes
+                      Done
                     </button>
                   </div>
                   
@@ -654,37 +655,37 @@ const WorkoutTracker = () => {
                         value={getCardioData('naman') || ''}
                         onChange={(e) => updateCardio('naman', parseInt(e.target.value) || 0)}
                         placeholder="Minutes"
-                        className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-orange-400 text-sm"
+                        className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
                       />
                       {getCardioData('naman') > 0 && (
-                        <p className="text-orange-400 font-bold mt-2 text-center">{getCardioData('naman')} min</p>
+                        <p className="text-gray-600 font-medium mt-2 text-center">{getCardioData('naman')} min</p>
                       )}
                     </div>
                   )}
                 </div>
 
                 <div>
-                  <p className="text-sm font-semibold text-blue-400 mb-4">Akash</p>
+                  <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Akash</p>
                   <div className="flex gap-2 mb-4">
                     <button
                       onClick={() => updateCardio('akash', 0)}
-                      className={`flex-1 py-3 rounded-lg font-bold transition ${
+                      className={`flex-1 py-3 rounded-lg font-medium transition ${
                         getCardioData('akash') === 0
-                          ? 'bg-red-600'
-                          : 'bg-slate-700 hover:bg-slate-600'
+                          ? 'bg-black text-white'
+                          : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
                     >
-                      No
+                      Skip
                     </button>
                     <button
                       onClick={() => updateCardio('akash', 1)}
-                      className={`flex-1 py-3 rounded-lg font-bold transition ${
+                      className={`flex-1 py-3 rounded-lg font-medium transition ${
                         getCardioData('akash') > 0
-                          ? 'bg-green-600'
-                          : 'bg-slate-700 hover:bg-slate-600'
+                          ? 'bg-black text-white'
+                          : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
                     >
-                      Yes
+                      Done
                     </button>
                   </div>
                   
@@ -695,65 +696,63 @@ const WorkoutTracker = () => {
                         value={getCardioData('akash') || ''}
                         onChange={(e) => updateCardio('akash', parseInt(e.target.value) || 0)}
                         placeholder="Minutes"
-                        className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 text-sm"
+                        className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
                       />
                       {getCardioData('akash') > 0 && (
-                        <p className="text-blue-400 font-bold mt-2 text-center">{getCardioData('akash')} min</p>
+                        <p className="text-gray-600 font-medium mt-2 text-center">{getCardioData('akash')} min</p>
                       )}
                     </div>
                   )}
                 </div>
               </div>
             </div>
-          </>
+          </div>
         )}
 
         {/* Weekly Log Tab */}
         {activeTab === 'weekly' && (
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Weekly Progress</h2>
-
+          <div className="px-4 py-8 space-y-4">
             {weeklyLog.map((log, idx) => {
               const dateObj = new Date(log.date + 'T00:00:00');
               const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
               
               return (
-                <div key={idx} className="bg-slate-800/50 backdrop-blur rounded-xl p-6 border border-slate-700/50">
+                <div key={idx} className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-lg font-bold text-white">{log.day.split(' - ')[0]}</h3>
-                      <p className="text-sm text-slate-400">{dayName} • {log.date}</p>
+                      <h3 className="text-base font-medium text-black">{log.day.split(' - ')[0]}</h3>
+                      <p className="text-sm text-gray-600">{dayName} • {log.date}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-slate-400">Total</p>
-                      <p className="text-2xl font-bold text-purple-400">{log.totalSets}</p>
+                      <p className="text-xs text-gray-600 font-medium uppercase tracking-wider">Total</p>
+                      <p className="text-2xl font-thin">{log.totalSets}</p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700/50">
-                      <p className="text-orange-400 text-sm font-semibold mb-3">Naman</p>
-                      <p className="text-2xl font-bold text-white mb-2">{log.namanSets}/{log.totalSets}</p>
-                      <div className="bg-slate-700 rounded-full h-2 mb-3">
+                    <div className="bg-white rounded-lg p-4 border border-gray-200">
+                      <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Naman</p>
+                      <p className="text-2xl font-thin mb-2">{log.namanSets}/{log.totalSets}</p>
+                      <div className="bg-gray-200 rounded-full h-1.5 mb-3">
                         <div
-                          className="bg-gradient-to-r from-orange-400 to-red-500 h-2 rounded-full"
+                          className="bg-black h-1.5 rounded-full"
                           style={{ width: `${log.namanPercent}%` }}
                         ></div>
                       </div>
-                      <p className="text-xs text-slate-400 mb-3">{log.namanPercent}%</p>
+                      <p className="text-xs text-gray-600 mb-3">{log.namanPercent}%</p>
                       
                       {log.namanCardio > 0 && (
-                        <div className="bg-green-900/30 border border-green-600 rounded p-2 mb-3">
-                          <p className="text-green-400 text-xs font-semibold">Cardio: {log.namanCardio} min</p>
+                        <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-3">
+                          <p className="text-blue-900 text-xs font-medium">Cardio: {log.namanCardio} min</p>
                         </div>
                       )}
                       
                       {log.namanExercises.length > 0 && (
-                        <div className="space-y-2 text-xs border-t border-slate-600 pt-3">
+                        <div className="space-y-2 text-xs border-t border-gray-200 pt-3">
                           {log.namanExercises.map((ex, i) => (
                             <div key={i}>
-                              <p className="text-orange-300 font-semibold truncate">{ex.name}</p>
-                              <p className="text-slate-400">
+                              <p className="text-gray-900 font-medium truncate">{ex.name}</p>
+                              <p className="text-gray-600">
                                 {ex.setsCompleted} set{ex.setsCompleted > 1 ? 's' : ''} 
                                 {ex.weights.length > 0 && ` • ${ex.weights.join(', ')}kg`}
                               </p>
@@ -763,29 +762,29 @@ const WorkoutTracker = () => {
                       )}
                     </div>
 
-                    <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700/50">
-                      <p className="text-blue-400 text-sm font-semibold mb-3">Akash</p>
-                      <p className="text-2xl font-bold text-white mb-2">{log.akashSets}/{log.totalSets}</p>
-                      <div className="bg-slate-700 rounded-full h-2 mb-3">
+                    <div className="bg-white rounded-lg p-4 border border-gray-200">
+                      <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Akash</p>
+                      <p className="text-2xl font-thin mb-2">{log.akashSets}/{log.totalSets}</p>
+                      <div className="bg-gray-200 rounded-full h-1.5 mb-3">
                         <div
-                          className="bg-gradient-to-r from-blue-400 to-cyan-500 h-2 rounded-full"
+                          className="bg-black h-1.5 rounded-full"
                           style={{ width: `${log.akashPercent}%` }}
                         ></div>
                       </div>
-                      <p className="text-xs text-slate-400 mb-3">{log.akashPercent}%</p>
+                      <p className="text-xs text-gray-600 mb-3">{log.akashPercent}%</p>
                       
                       {log.akashCardio > 0 && (
-                        <div className="bg-green-900/30 border border-green-600 rounded p-2 mb-3">
-                          <p className="text-green-400 text-xs font-semibold">Cardio: {log.akashCardio} min</p>
+                        <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-3">
+                          <p className="text-blue-900 text-xs font-medium">Cardio: {log.akashCardio} min</p>
                         </div>
                       )}
                       
                       {log.akashExercises.length > 0 && (
-                        <div className="space-y-2 text-xs border-t border-slate-600 pt-3">
+                        <div className="space-y-2 text-xs border-t border-gray-200 pt-3">
                           {log.akashExercises.map((ex, i) => (
                             <div key={i}>
-                              <p className="text-blue-300 font-semibold truncate">{ex.name}</p>
-                              <p className="text-slate-400">
+                              <p className="text-gray-900 font-medium truncate">{ex.name}</p>
+                              <p className="text-gray-600">
                                 {ex.setsCompleted} set{ex.setsCompleted > 1 ? 's' : ''} 
                                 {ex.weights.length > 0 && ` • ${ex.weights.join(', ')}kg`}
                               </p>
