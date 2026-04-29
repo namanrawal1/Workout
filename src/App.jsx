@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { RotateCcw, AlertCircle, TrendingUp, LogOut } from 'lucide-react';
+import { RotateCcw, AlertCircle, TrendingUp, LogOut, ChevronDown, ChevronUp } from 'lucide-react';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, update } from 'firebase/database';
 
@@ -22,13 +22,14 @@ const database = getDatabase(app);
 const WorkoutTracker = () => {
   const [selectedDay, setSelectedDay] = useState('Day 1 - Push');
   const [progress, setProgress] = useState({});
-  const [weights, setWeights] = useState({});
+  const [setWeights, setSetWeights] = useState({});
   const [treadmill, setTreadmill] = useState({});
   const [isConnected, setIsConnected] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [userName, setUserName] = useState(localStorage.getItem('userName') || 'naman');
   const [showNamePrompt, setShowNamePrompt] = useState(!localStorage.getItem('userName'));
-  const [activeTab, setActiveTab] = useState('tracker'); // 'tracker', 'weights', 'cardio', 'weekly'
+  const [activeTab, setActiveTab] = useState('tracker');
+  const [expandedExercise, setExpandedExercise] = useState(null);
   const listenerRef = useRef(null);
 
   const workoutPlan = {
@@ -86,7 +87,7 @@ const WorkoutTracker = () => {
         if (snapshot.exists()) {
           const data = snapshot.val();
           setProgress(data.progress || {});
-          setWeights(data.weights || {});
+          setSetWeights(data.setWeights || {});
           setTreadmill(data.treadmill || {});
         }
         setIsConnected(true);
@@ -140,19 +141,19 @@ const WorkoutTracker = () => {
     }
   };
 
-  const updateWeight = (day, exerciseIdx, weight) => {
+  const updateSetWeight = (day, exerciseIdx, person, setIdx, weight) => {
     const today = getTodayDateString();
-    const key = `${today}-${day}-${exerciseIdx}`;
+    const key = `${today}-${day}-${exerciseIdx}-${person}-set${setIdx}`;
     
-    const newWeights = {
-      ...weights,
+    const newSetWeights = {
+      ...setWeights,
       [key]: weight,
     };
-    setWeights(newWeights);
+    setSetWeights(newSetWeights);
 
     if (sessionId) {
       update(ref(database, `sessions/${sessionId}`), {
-        weights: newWeights,
+        setWeights: newSetWeights,
         lastUpdated: new Date().toISOString(),
       });
     }
@@ -225,12 +226,48 @@ const WorkoutTracker = () => {
       const day = days[i % days.length];
 
       let namanSets = 0, akashSets = 0, totalSets = 0;
+      let namanExercises = [];
+      let akashExercises = [];
 
       if (progress[day]) {
         workoutPlan[day].forEach((exercise, idx) => {
-          namanSets += progress[day][idx]?.naman || 0;
-          akashSets += progress[day][idx]?.akash || 0;
+          const namanCompleted = progress[day][idx]?.naman || 0;
+          const akashCompleted = progress[day][idx]?.akash || 0;
+          
+          namanSets += namanCompleted;
+          akashSets += akashCompleted;
           totalSets += exercise.sets;
+
+          // Get weights for this exercise
+          let namanWeights = [];
+          let akashWeights = [];
+
+          for (let setIdx = 0; setIdx < exercise.sets; setIdx++) {
+            const namanWeightKey = `${dateStr}-${day}-${idx}-naman-set${setIdx}`;
+            const akashWeightKey = `${dateStr}-${day}-${idx}-akash-set${setIdx}`;
+            
+            if (setWeights[namanWeightKey]) {
+              namanWeights.push(setWeights[namanWeightKey]);
+            }
+            if (setWeights[akashWeightKey]) {
+              akashWeights.push(setWeights[akashWeightKey]);
+            }
+          }
+
+          if (namanCompleted > 0) {
+            namanExercises.push({
+              name: exercise.name,
+              setsCompleted: namanCompleted,
+              weights: namanWeights,
+            });
+          }
+          if (akashCompleted > 0) {
+            akashExercises.push({
+              name: exercise.name,
+              setsCompleted: akashCompleted,
+              weights: akashWeights,
+            });
+          }
         });
       }
 
@@ -242,6 +279,8 @@ const WorkoutTracker = () => {
         totalSets,
         namanPercent: totalSets > 0 ? Math.round((namanSets / totalSets) * 100) : 0,
         akashPercent: totalSets > 0 ? Math.round((akashSets / totalSets) * 100) : 0,
+        namanExercises,
+        akashExercises,
       });
     }
 
@@ -321,7 +360,6 @@ const WorkoutTracker = () => {
         <div className="flex gap-2 mb-8 overflow-x-auto">
           {[
             { id: 'tracker', label: '📋 Tracker' },
-            { id: 'weights', label: '⚖️ Weights' },
             { id: 'cardio', label: '🏃 Cardio' },
             { id: 'weekly', label: '📊 Weekly Log' },
           ].map((tab) => (
@@ -403,41 +441,58 @@ const WorkoutTracker = () => {
               </div>
             </div>
 
-            {/* Exercise List */}
+            {/* Exercise List with Per-Set Weights */}
             <div className="space-y-4">
               {workoutPlan[selectedDay].map((exercise, idx) => {
                 const exerciseProgress = progress[selectedDay]?.[idx] || {
                   naman: 0,
                   akash: 0,
                 };
+                const today = getTodayDateString();
+                const isExpanded = expandedExercise === idx;
 
                 return (
                   <div
                     key={idx}
-                    className={`rounded-xl p-6 hover:border-slate-500 transition ${
+                    className={`rounded-xl hover:border-slate-500 transition ${
                       exercise.isSuperSet
                         ? 'bg-gradient-to-r from-slate-700 to-slate-600 border-2 border-amber-500 shadow-lg shadow-amber-500/20'
                         : 'bg-slate-700 border border-slate-600'
                     }`}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-white mb-1 truncate">
-                          {exercise.name}
-                        </h3>
-                        <p className="text-sm text-slate-400">
-                          {exercise.sets} sets × {exercise.reps} reps
-                        </p>
+                    {/* Exercise Header */}
+                    <div 
+                      className="p-6 cursor-pointer hover:bg-slate-600/30"
+                      onClick={() => setExpandedExercise(isExpanded ? null : idx)}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg font-semibold text-white mb-1">
+                            {exercise.name}
+                          </h3>
+                          <p className="text-sm text-slate-400">
+                            {exercise.sets} sets × {exercise.reps} reps
+                          </p>
+                        </div>
+                        <div className="ml-4">
+                          {isExpanded ? (
+                            <ChevronUp className="text-slate-400" />
+                          ) : (
+                            <ChevronDown className="text-slate-400" />
+                          )}
+                        </div>
                       </div>
 
-                      <div className="flex gap-8 flex-wrap sm:flex-nowrap">
-                        <div className="flex flex-col items-center">
+                      {/* Quick Set View */}
+                      <div className="mt-4 flex gap-8">
+                        <div>
                           <p className="text-xs font-semibold text-orange-400 mb-2">Naman</p>
-                          <div className="flex gap-2 flex-wrap justify-center">
+                          <div className="flex gap-2 flex-wrap">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => (
                               <button
                                 key={setIdx}
-                                onClick={() =>
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   updateProgress(
                                     selectedDay,
                                     idx,
@@ -445,9 +500,9 @@ const WorkoutTracker = () => {
                                     exerciseProgress.naman === setIdx + 1
                                       ? setIdx
                                       : setIdx + 1
-                                  )
-                                }
-                                className={`w-10 h-10 rounded-lg font-bold transition-all ${
+                                  );
+                                }}
+                                className={`w-10 h-10 rounded-lg font-bold transition-all text-sm ${
                                   exerciseProgress.naman > setIdx
                                     ? 'bg-orange-500 text-white shadow-lg scale-105'
                                     : 'bg-slate-600 text-slate-400 hover:bg-slate-500'
@@ -459,13 +514,14 @@ const WorkoutTracker = () => {
                           </div>
                         </div>
 
-                        <div className="flex flex-col items-center">
+                        <div>
                           <p className="text-xs font-semibold text-blue-400 mb-2">Akash</p>
-                          <div className="flex gap-2 flex-wrap justify-center">
+                          <div className="flex gap-2 flex-wrap">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => (
                               <button
                                 key={setIdx}
-                                onClick={() =>
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   updateProgress(
                                     selectedDay,
                                     idx,
@@ -473,9 +529,9 @@ const WorkoutTracker = () => {
                                     exerciseProgress.akash === setIdx + 1
                                       ? setIdx
                                       : setIdx + 1
-                                  )
-                                }
-                                className={`w-10 h-10 rounded-lg font-bold transition-all ${
+                                  );
+                                }}
+                                className={`w-10 h-10 rounded-lg font-bold transition-all text-sm ${
                                   exerciseProgress.akash > setIdx
                                     ? 'bg-blue-500 text-white shadow-lg scale-105'
                                     : 'bg-slate-600 text-slate-400 hover:bg-slate-500'
@@ -488,65 +544,64 @@ const WorkoutTracker = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Expanded: Weight Inputs */}
+                    {isExpanded && (
+                      <div className="border-t border-slate-600 p-6 bg-slate-800/50 space-y-4">
+                        {/* Naman Weights */}
+                        <div>
+                          <p className="text-sm font-semibold text-orange-400 mb-3">Naman - Weight per Set</p>
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            {Array.from({ length: exercise.sets }).map((_, setIdx) => {
+                              const weightKey = `${today}-${selectedDay}-${idx}-naman-set${setIdx}`;
+                              const weight = setWeights[weightKey] || '';
+                              
+                              return (
+                                <div key={setIdx} className="flex items-center gap-2">
+                                  <span className="text-xs text-slate-400 w-6">S{setIdx + 1}:</span>
+                                  <input
+                                    type="number"
+                                    value={weight}
+                                    onChange={(e) => updateSetWeight(selectedDay, idx, 'naman', setIdx, e.target.value)}
+                                    placeholder="kg"
+                                    className="flex-1 bg-slate-600 border border-slate-500 rounded px-2 py-1 text-white placeholder-slate-400 focus:outline-none focus:border-orange-400 text-sm"
+                                  />
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Akash Weights */}
+                        <div>
+                          <p className="text-sm font-semibold text-blue-400 mb-3">Akash - Weight per Set</p>
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            {Array.from({ length: exercise.sets }).map((_, setIdx) => {
+                              const weightKey = `${today}-${selectedDay}-${idx}-akash-set${setIdx}`;
+                              const weight = setWeights[weightKey] || '';
+                              
+                              return (
+                                <div key={setIdx} className="flex items-center gap-2">
+                                  <span className="text-xs text-slate-400 w-6">S{setIdx + 1}:</span>
+                                  <input
+                                    type="number"
+                                    value={weight}
+                                    onChange={(e) => updateSetWeight(selectedDay, idx, 'akash', setIdx, e.target.value)}
+                                    placeholder="kg"
+                                    className="flex-1 bg-slate-600 border border-slate-500 rounded px-2 py-1 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 text-sm"
+                                  />
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </div>
           </>
-        )}
-
-        {/* Weights Tab */}
-        {activeTab === 'weights' && (
-          <div className="space-y-4">
-            <div className="bg-blue-900/30 border border-blue-500 rounded-xl p-4 mb-6">
-              <p className="text-blue-300 text-sm">Enter the weight you're using for each exercise today</p>
-            </div>
-            
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-8">
-              {days.map((day) => (
-                <button
-                  key={day}
-                  onClick={() => setSelectedDay(day)}
-                  className={`py-3 px-3 rounded-lg font-semibold transition-all text-sm sm:text-base ${
-                    selectedDay === day
-                      ? 'bg-gradient-to-r from-orange-500 to-red-500 shadow-lg scale-105'
-                      : 'bg-slate-700 hover:bg-slate-600'
-                  }`}
-                >
-                  {day.split(' - ')[0]}
-                </button>
-              ))}
-            </div>
-
-            <div className="space-y-4">
-              {workoutPlan[selectedDay].map((exercise, idx) => {
-                const today = getTodayDateString();
-                const key = `${today}-${selectedDay}-${idx}`;
-                const currentWeight = weights[key] || '';
-
-                return (
-                  <div key={idx} className="bg-slate-700 border border-slate-600 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4">{exercise.name}</h3>
-                    <div className="flex gap-4 items-end">
-                      <div className="flex-1">
-                        <label className="text-sm text-slate-300 mb-2 block">Weight (kg)</label>
-                        <input
-                          type="number"
-                          value={currentWeight}
-                          onChange={(e) => updateWeight(selectedDay, idx, e.target.value)}
-                          placeholder="Enter weight"
-                          className="w-full bg-slate-600 border border-slate-500 rounded-lg px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:border-orange-400"
-                        />
-                      </div>
-                      {currentWeight && (
-                        <div className="text-2xl font-bold text-orange-400">{currentWeight}kg</div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
         )}
 
         {/* Cardio Tab */}
@@ -624,29 +679,59 @@ const WorkoutTracker = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {/* Naman */}
                     <div className="bg-slate-800 rounded-lg p-4">
-                      <p className="text-orange-400 text-sm font-semibold mb-2">Naman</p>
-                      <p className="text-2xl font-bold text-white">{log.namanSets}/{log.totalSets}</p>
-                      <div className="mt-2 bg-slate-600 rounded-full h-2">
+                      <p className="text-orange-400 text-sm font-semibold mb-3">Naman</p>
+                      <p className="text-2xl font-bold text-white mb-2">{log.namanSets}/{log.totalSets}</p>
+                      <div className="bg-slate-600 rounded-full h-2 mb-3">
                         <div
                           className="bg-orange-500 h-2 rounded-full"
                           style={{ width: `${log.namanPercent}%` }}
                         ></div>
                       </div>
-                      <p className="text-xs text-slate-400 mt-1">{log.namanPercent}%</p>
+                      <p className="text-xs text-slate-400 mb-3">{log.namanPercent}%</p>
+                      
+                      {log.namanExercises.length > 0 && (
+                        <div className="space-y-2 text-xs border-t border-slate-600 pt-3">
+                          {log.namanExercises.map((ex, i) => (
+                            <div key={i}>
+                              <p className="text-orange-300 font-semibold truncate">{ex.name}</p>
+                              <p className="text-slate-400">
+                                {ex.setsCompleted} set{ex.setsCompleted > 1 ? 's' : ''} 
+                                {ex.weights.length > 0 && ` • ${ex.weights.join(', ')}kg`}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
+                    {/* Akash */}
                     <div className="bg-slate-800 rounded-lg p-4">
-                      <p className="text-blue-400 text-sm font-semibold mb-2">Akash</p>
-                      <p className="text-2xl font-bold text-white">{log.akashSets}/{log.totalSets}</p>
-                      <div className="mt-2 bg-slate-600 rounded-full h-2">
+                      <p className="text-blue-400 text-sm font-semibold mb-3">Akash</p>
+                      <p className="text-2xl font-bold text-white mb-2">{log.akashSets}/{log.totalSets}</p>
+                      <div className="bg-slate-600 rounded-full h-2 mb-3">
                         <div
                           className="bg-blue-500 h-2 rounded-full"
                           style={{ width: `${log.akashPercent}%` }}
                         ></div>
                       </div>
-                      <p className="text-xs text-slate-400 mt-1">{log.akashPercent}%</p>
+                      <p className="text-xs text-slate-400 mb-3">{log.akashPercent}%</p>
+                      
+                      {log.akashExercises.length > 0 && (
+                        <div className="space-y-2 text-xs border-t border-slate-600 pt-3">
+                          {log.akashExercises.map((ex, i) => (
+                            <div key={i}>
+                              <p className="text-blue-300 font-semibold truncate">{ex.name}</p>
+                              <p className="text-slate-400">
+                                {ex.setsCompleted} set{ex.setsCompleted > 1 ? 's' : ''} 
+                                {ex.weights.length > 0 && ` • ${ex.weights.join(', ')}kg`}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
