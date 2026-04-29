@@ -256,9 +256,6 @@ const WorkoutTracker = () => {
         });
       }
 
-      const namanCardioKey = `${dateStr}-${day}-naman`;
-      const akashCardioKey = `${dateStr}-${day}-akash`;
-
       weekLog.push({
         date: dateStr,
         day,
