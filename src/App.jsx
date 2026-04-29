@@ -278,29 +278,29 @@ const WorkoutTracker = () => {
   // Name prompt
   if (showNamePrompt) {
     return (
-      <div className="min-h-screen bg-white text-black flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white flex items-center justify-center p-4 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
-          <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-900 rounded-full mix-blend-screen filter blur-3xl opacity-20"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-900 rounded-full mix-blend-screen filter blur-3xl opacity-20"></div>
+          <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-gray-800 rounded-full mix-blend-screen filter blur-3xl opacity-10"></div>
         </div>
 
         <div className="max-w-md w-full relative z-10">
           <div className="text-center mb-12">
             <h1 className="text-5xl font-thin mb-2 tracking-tight">Workout</h1>
-            <p className="text-gray-600 text-lg font-light">Track your progress</p>
+            <p className="text-gray-400 text-lg font-light">Track your progress</p>
           </div>
           
           <div className="flex flex-col gap-4">
             <button
               onClick={() => setUserAndStart('naman')}
-              className="w-full bg-black hover:bg-gray-900 text-white py-4 rounded-xl font-medium transition duration-200"
+              className="w-full bg-white hover:bg-gray-100 text-black py-4 rounded-xl font-medium transition duration-200"
             >
               Continue as Naman
             </button>
             <button
               onClick={() => setUserAndStart('akash')}
-              className="w-full bg-gray-200 hover:bg-gray-300 text-black py-4 rounded-xl font-medium transition duration-200"
+              className="w-full bg-gray-800 hover:bg-gray-700 text-white py-4 rounded-xl font-medium transition duration-200 border border-gray-700"
             >
               Continue as Akash
             </button>
@@ -311,25 +311,25 @@ const WorkoutTracker = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white text-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-        <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-900 rounded-full mix-blend-screen filter blur-3xl opacity-20"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-900 rounded-full mix-blend-screen filter blur-3xl opacity-20"></div>
+        <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-gray-800 rounded-full mix-blend-screen filter blur-3xl opacity-10"></div>
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
-        <div className="flex items-center justify-between pt-8 pb-6 px-4 border-b border-gray-200">
+        <div className="flex items-center justify-between pt-8 pb-6 px-4 border-b border-gray-800">
           <div>
             <h1 className="text-3xl font-thin tracking-tight">Workout Tracker</h1>
-            <p className="text-gray-600 text-sm mt-1">
+            <p className="text-gray-400 text-sm mt-1">
               {userName === 'naman' ? 'Welcome, Naman' : 'Welcome, Akash'}
             </p>
           </div>
           <button
             onClick={logout}
-            className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 hover:bg-gray-300 transition"
+            className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-800 hover:bg-gray-700 transition text-gray-300"
           >
             Switch
           </button>
@@ -337,19 +337,19 @@ const WorkoutTracker = () => {
 
         {/* Connection Status */}
         {isConnected ? (
-          <div className="mx-4 mt-6 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2">
+          <div className="mx-4 mt-6 p-3 bg-green-950 border border-green-800 rounded-lg flex items-center gap-2">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <p className="text-green-800 text-sm font-medium">Synced</p>
+            <p className="text-green-400 text-sm font-medium">Synced</p>
           </div>
         ) : (
-          <div className="mx-4 mt-6 p-3 bg-orange-50 border border-orange-200 rounded-lg flex items-start gap-2">
-            <AlertCircle size={16} className="text-orange-600 flex-shrink-0 mt-0.5" />
-            <p className="text-orange-800 text-sm font-medium">Connecting...</p>
+          <div className="mx-4 mt-6 p-3 bg-orange-950 border border-orange-800 rounded-lg flex items-start gap-2">
+            <AlertCircle size={16} className="text-orange-400 flex-shrink-0 mt-0.5" />
+            <p className="text-orange-400 text-sm font-medium">Connecting...</p>
           </div>
         )}
 
         {/* Tabs */}
-        <div className="flex gap-8 px-4 mt-8 border-b border-gray-200">
+        <div className="flex gap-8 px-4 mt-8 border-b border-gray-800">
           {[
             { id: 'tracker', label: 'Today' },
             { id: 'weekly', label: 'Weekly' },
@@ -359,8 +359,8 @@ const WorkoutTracker = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`py-3 font-medium text-sm transition border-b-2 -mb-px ${
                 activeTab === tab.id
-                  ? 'border-black text-black'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
+                  ? 'border-white text-white'
+                  : 'border-transparent text-gray-500 hover:text-gray-300'
               }`}
             >
               {tab.label}
@@ -373,7 +373,7 @@ const WorkoutTracker = () => {
           <div className="px-4 py-6 pb-12">
             {/* Day Selector */}
             <div className="mb-10">
-              <p className="text-xs text-gray-600 font-medium mb-6 uppercase tracking-wider">Select Day</p>
+              <p className="text-xs text-gray-400 font-medium mb-6 uppercase tracking-wider">Select Day</p>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                 {days.map((day) => (
                   <button
@@ -381,8 +381,8 @@ const WorkoutTracker = () => {
                     onClick={() => setSelectedDay(day)}
                     className={`py-3 px-3 rounded-lg font-medium transition text-sm ${
                       selectedDay === day
-                        ? 'bg-black text-white'
-                        : 'bg-gray-100 text-black hover:bg-gray-200'
+                        ? 'bg-white text-black'
+                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                     }`}
                   >
                     {day.split(' - ')[0]}
@@ -393,42 +393,42 @@ const WorkoutTracker = () => {
 
             {/* Progress Overview */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
-              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
-                <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Naman</p>
-                <p className="text-4xl font-thin mb-6">
+              <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800">
+                <p className="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Naman</p>
+                <p className="text-4xl font-thin mb-6 text-white">
                   {dayProgress.namanSets}/{dayProgress.total}
                 </p>
-                <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                <div className="w-full bg-gray-800 rounded-full h-2 mb-4">
                   <div
-                    className="bg-black h-2 rounded-full transition-all"
+                    className="bg-white h-2 rounded-full transition-all"
                     style={{ width: `${dayProgress.naman}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-600">{dayProgress.naman}% complete</p>
+                <p className="text-xs text-gray-400">{dayProgress.naman}% complete</p>
               </div>
 
-              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
-                <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Akash</p>
-                <p className="text-4xl font-thin mb-6">
+              <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800">
+                <p className="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Akash</p>
+                <p className="text-4xl font-thin mb-6 text-white">
                   {dayProgress.akashSets}/{dayProgress.total}
                 </p>
-                <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                <div className="w-full bg-gray-800 rounded-full h-2 mb-4">
                   <div
-                    className="bg-black h-2 rounded-full transition-all"
+                    className="bg-white h-2 rounded-full transition-all"
                     style={{ width: `${dayProgress.akash}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-600">{dayProgress.akash}% complete</p>
+                <p className="text-xs text-gray-400">{dayProgress.akash}% complete</p>
               </div>
 
-              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200 flex flex-col justify-between">
+              <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 flex flex-col justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Total Sets</p>
-                  <p className="text-4xl font-thin mb-8">{dayProgress.total}</p>
+                  <p className="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Total Sets</p>
+                  <p className="text-4xl font-thin mb-8 text-white">{dayProgress.total}</p>
                 </div>
                 <button
                   onClick={resetDay}
-                  className="bg-gray-200 hover:bg-gray-300 px-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition"
+                  className="bg-gray-800 hover:bg-gray-700 px-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition text-gray-300"
                 >
                   <RotateCcw size={16} /> Reset
                 </button>
@@ -450,35 +450,35 @@ const WorkoutTracker = () => {
                     key={idx}
                     className={`rounded-2xl border transition ${
                       exercise.isSuperSet
-                        ? 'bg-gray-50 border-gray-300'
-                        : 'bg-gray-50 border-gray-200'
+                        ? 'bg-gray-900 border-gray-700'
+                        : 'bg-gray-900 border-gray-800'
                     }`}
                   >
                     <div 
-                      className="p-6 cursor-pointer hover:bg-white/50"
+                      className="p-6 cursor-pointer hover:bg-gray-800/50"
                       onClick={() => setExpandedExercise(isExpanded ? null : idx)}
                     >
                       <div className="flex justify-between items-start mb-6">
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-base font-medium text-black mb-2">
+                          <h3 className="text-base font-medium text-white mb-2">
                             {exercise.name}
                           </h3>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-gray-400">
                             {exercise.sets} sets × {exercise.reps} reps
                           </p>
                         </div>
                         <div className="ml-4">
                           {isExpanded ? (
-                            <ChevronUp className="text-gray-400" />
+                            <ChevronUp className="text-gray-500" />
                           ) : (
-                            <ChevronDown className="text-gray-400" />
+                            <ChevronDown className="text-gray-500" />
                           )}
                         </div>
                       </div>
 
                       <div className="flex gap-12">
                         <div>
-                          <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Naman</p>
+                          <p className="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Naman</p>
                           <div className="flex gap-3 flex-wrap">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => (
                               <button
@@ -496,8 +496,8 @@ const WorkoutTracker = () => {
                                 }}
                                 className={`w-10 h-10 rounded-lg font-medium transition text-sm ${
                                   exerciseProgress.naman > setIdx
-                                    ? 'bg-black text-white'
-                                    : 'bg-white border border-gray-300 text-gray-600 hover:border-gray-400'
+                                    ? 'bg-white text-black'
+                                    : 'bg-gray-800 border border-gray-700 text-gray-400 hover:border-gray-600'
                                 }`}
                               >
                                 {setIdx + 1}
@@ -507,7 +507,7 @@ const WorkoutTracker = () => {
                         </div>
 
                         <div>
-                          <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Akash</p>
+                          <p className="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Akash</p>
                           <div className="flex gap-3 flex-wrap">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => (
                               <button
@@ -525,8 +525,8 @@ const WorkoutTracker = () => {
                                 }}
                                 className={`w-10 h-10 rounded-lg font-medium transition text-sm ${
                                   exerciseProgress.akash > setIdx
-                                    ? 'bg-black text-white'
-                                    : 'bg-white border border-gray-300 text-gray-600 hover:border-gray-400'
+                                    ? 'bg-white text-black'
+                                    : 'bg-gray-800 border border-gray-700 text-gray-400 hover:border-gray-600'
                                 }`}
                               >
                                 {setIdx + 1}
@@ -538,9 +538,9 @@ const WorkoutTracker = () => {
                     </div>
 
                     {isExpanded && (
-                      <div className="border-t border-gray-200 p-8 bg-white space-y-8">
+                      <div className="border-t border-gray-800 p-8 bg-gray-800/50 space-y-8">
                         <div>
-                          <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Naman - Weight per Set</p>
+                          <p className="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Naman - Weight per Set</p>
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => {
                               const weightKey = `${today}-${selectedDay}-${idx}-naman-set${setIdx}`;
@@ -548,13 +548,13 @@ const WorkoutTracker = () => {
                               
                               return (
                                 <div key={setIdx} className="flex items-center gap-2">
-                                  <span className="text-xs text-gray-600 w-8 font-medium">S{setIdx + 1}:</span>
+                                  <span className="text-xs text-gray-400 w-8 font-medium">S{setIdx + 1}:</span>
                                   <input
                                     type="number"
                                     value={weight}
                                     onChange={(e) => updateSetWeight(selectedDay, idx, 'naman', setIdx, e.target.value)}
                                     placeholder="kg"
-                                    className="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
+                                    className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-600 text-sm"
                                   />
                                 </div>
                               );
@@ -563,7 +563,7 @@ const WorkoutTracker = () => {
                         </div>
 
                         <div>
-                          <p className="text-xs text-gray-600 font-medium mb-4 uppercase tracking-wider">Akash - Weight per Set</p>
+                          <p className="text-xs text-gray-400 font-medium mb-4 uppercase tracking-wider">Akash - Weight per Set</p>
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => {
                               const weightKey = `${today}-${selectedDay}-${idx}-akash-set${setIdx}`;
@@ -571,13 +571,13 @@ const WorkoutTracker = () => {
                               
                               return (
                                 <div key={setIdx} className="flex items-center gap-2">
-                                  <span className="text-xs text-gray-600 w-8 font-medium">S{setIdx + 1}:</span>
+                                  <span className="text-xs text-gray-400 w-8 font-medium">S{setIdx + 1}:</span>
                                   <input
                                     type="number"
                                     value={weight}
                                     onChange={(e) => updateSetWeight(selectedDay, idx, 'akash', setIdx, e.target.value)}
                                     placeholder="kg"
-                                    className="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-2 text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black text-sm"
+                                    className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-600 text-sm"
                                   />
                                 </div>
                               );
@@ -600,40 +600,40 @@ const WorkoutTracker = () => {
         {activeTab === 'weekly' && (
           <div className="px-4 py-8 space-y-4">
             {weeklyLog.map((log, idx) => {
-              const dateObj = new Date(log.date + 'T00:00:00');
-              const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+              const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+              const dayName = dayNames[idx % 5];
               
               return (
-                <div key={idx} className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+                <div key={idx} className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-base font-medium text-black">{log.day.split(' - ')[0]}</h3>
-                      <p className="text-sm text-gray-600">{dayName} • {log.date}</p>
+                      <h3 className="text-base font-medium text-white">{log.day.split(' - ')[0]}</h3>
+                      <p className="text-sm text-gray-400">{dayName}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-gray-600 font-medium uppercase tracking-wider">Total</p>
-                      <p className="text-2xl font-thin">{log.totalSets}</p>
+                      <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">Total</p>
+                      <p className="text-2xl font-thin text-white">{log.totalSets}</p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="bg-white rounded-lg p-4 border border-gray-200">
-                      <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Naman</p>
-                      <p className="text-2xl font-thin mb-2">{log.namanSets}/{log.totalSets}</p>
-                      <div className="bg-gray-200 rounded-full h-1.5 mb-3">
+                    <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                      <p className="text-xs text-gray-400 font-medium mb-3 uppercase tracking-wider">Naman</p>
+                      <p className="text-2xl font-thin mb-2 text-white">{log.namanSets}/{log.totalSets}</p>
+                      <div className="bg-gray-700 rounded-full h-1.5 mb-3">
                         <div
-                          className="bg-black h-1.5 rounded-full"
+                          className="bg-white h-1.5 rounded-full"
                           style={{ width: `${log.namanPercent}%` }}
                         ></div>
                       </div>
-                      <p className="text-xs text-gray-600 mb-3">{log.namanPercent}%</p>
+                      <p className="text-xs text-gray-400 mb-3">{log.namanPercent}%</p>
                       
                       {log.namanExercises.length > 0 && (
-                        <div className="space-y-2 text-xs border-t border-gray-200 pt-3">
+                        <div className="space-y-2 text-xs border-t border-gray-700 pt-3">
                           {log.namanExercises.map((ex, i) => (
                             <div key={i}>
-                              <p className="text-gray-900 font-medium truncate">{ex.name}</p>
-                              <p className="text-gray-600">
+                              <p className="text-gray-200 font-medium truncate">{ex.name}</p>
+                              <p className="text-gray-500">
                                 {ex.setsCompleted} set{ex.setsCompleted > 1 ? 's' : ''} 
                                 {ex.weights.length > 0 && ` • ${ex.weights.join(', ')}kg`}
                               </p>
@@ -643,23 +643,23 @@ const WorkoutTracker = () => {
                       )}
                     </div>
 
-                    <div className="bg-white rounded-lg p-4 border border-gray-200">
-                      <p className="text-xs text-gray-600 font-medium mb-3 uppercase tracking-wider">Akash</p>
-                      <p className="text-2xl font-thin mb-2">{log.akashSets}/{log.totalSets}</p>
-                      <div className="bg-gray-200 rounded-full h-1.5 mb-3">
+                    <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                      <p className="text-xs text-gray-400 font-medium mb-3 uppercase tracking-wider">Akash</p>
+                      <p className="text-2xl font-thin mb-2 text-white">{log.akashSets}/{log.totalSets}</p>
+                      <div className="bg-gray-700 rounded-full h-1.5 mb-3">
                         <div
-                          className="bg-black h-1.5 rounded-full"
+                          className="bg-white h-1.5 rounded-full"
                           style={{ width: `${log.akashPercent}%` }}
                         ></div>
                       </div>
-                      <p className="text-xs text-gray-600 mb-3">{log.akashPercent}%</p>
+                      <p className="text-xs text-gray-400 mb-3">{log.akashPercent}%</p>
                       
                       {log.akashExercises.length > 0 && (
-                        <div className="space-y-2 text-xs border-t border-gray-200 pt-3">
+                        <div className="space-y-2 text-xs border-t border-gray-700 pt-3">
                           {log.akashExercises.map((ex, i) => (
                             <div key={i}>
-                              <p className="text-gray-900 font-medium truncate">{ex.name}</p>
-                              <p className="text-gray-600">
+                              <p className="text-gray-200 font-medium truncate">{ex.name}</p>
+                              <p className="text-gray-500">
                                 {ex.setsCompleted} set{ex.setsCompleted > 1 ? 's' : ''} 
                                 {ex.weights.length > 0 && ` • ${ex.weights.join(', ')}kg`}
                               </p>
