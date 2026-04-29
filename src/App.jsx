@@ -161,7 +161,7 @@ const WorkoutTracker = () => {
 
   const updateCardio = (person, duration) => {
     const today = getTodayDateString();
-    const key = `${today}-${person}`;
+    const key = `${today}-${selectedDay}-${person}`;
     
     const newCardio = {
       ...cardio,
@@ -179,7 +179,7 @@ const WorkoutTracker = () => {
 
   const getCardioData = (person) => {
     const today = getTodayDateString();
-    const key = `${today}-${person}`;
+    const key = `${today}-${selectedDay}-${person}`;
     return cardio[key] || 0;
   };
 
@@ -278,8 +278,8 @@ const WorkoutTracker = () => {
         });
       }
 
-      const namanCardioKey = `${dateStr}-naman`;
-      const akashCardioKey = `${dateStr}-akash`;
+      const namanCardioKey = `${dateStr}-${day}-naman`;
+      const akashCardioKey = `${dateStr}-${day}-akash`;
 
       weekLog.push({
         date: dateStr,
