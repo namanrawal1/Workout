@@ -541,14 +541,14 @@ const WorkoutTracker = () => {
                       <div className="border-t border-gray-800 p-6 bg-gray-800/50 space-y-6">
                         <div>
                           <p className="text-xs text-gray-400 font-medium mb-3 uppercase tracking-wider">Naman - Weight per Set</p>
-                          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                          <div className="space-y-2">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => {
                               const weightKey = `${today}-${selectedDay}-${idx}-naman-set${setIdx}`;
                               const weight = setWeights[weightKey] || '';
                               
                               return (
-                                <div key={setIdx} className="flex items-center gap-1">
-                                  <span className="text-xs text-gray-500 w-5">S{setIdx + 1}</span>
+                                <div key={setIdx} className="flex items-center gap-2">
+                                  <span className="text-xs text-gray-500 w-8">S{setIdx + 1}</span>
                                   <input
                                     type="number"
                                     value={weight}
@@ -564,14 +564,14 @@ const WorkoutTracker = () => {
 
                         <div>
                           <p className="text-xs text-gray-400 font-medium mb-3 uppercase tracking-wider">Akash - Weight per Set</p>
-                          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                          <div className="space-y-2">
                             {Array.from({ length: exercise.sets }).map((_, setIdx) => {
                               const weightKey = `${today}-${selectedDay}-${idx}-akash-set${setIdx}`;
                               const weight = setWeights[weightKey] || '';
                               
                               return (
-                                <div key={setIdx} className="flex items-center gap-1">
-                                  <span className="text-xs text-gray-500 w-5">S{setIdx + 1}</span>
+                                <div key={setIdx} className="flex items-center gap-2">
+                                  <span className="text-xs text-gray-500 w-8">S{setIdx + 1}</span>
                                   <input
                                     type="number"
                                     value={weight}
