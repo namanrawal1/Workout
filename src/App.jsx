@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { RotateCcw, AlertCircle, TrendingUp, LogOut, ChevronDown, ChevronUp } from 'lucide-react';
+import { RotateCcw, AlertCircle, LogOut, ChevronDown, ChevronUp } from 'lucide-react';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, update } from 'firebase/database';
 
