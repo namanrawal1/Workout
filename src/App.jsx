@@ -227,11 +227,17 @@ const WorkoutTracker = () => {
     const weekLog = [];
     const today = new Date();
 
+    // Get last 5 days
     for (let i = 4; i >= 0; i--) {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
-      const day = days[i % days.length];
+      
+      // Determine which day this date should be
+      // We cycle through the 5 workout days
+      const dayOfWeek = date.getDay();
+      const dayIndex = (dayOfWeek + 4) % 5; // Map Sunday(0) to Friday(4) cycle
+      const day = days[dayIndex];
 
       let namanSets = 0, akashSets = 0, totalSets = 0;
       let namanExercises = [];
