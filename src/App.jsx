@@ -23,7 +23,6 @@ const WorkoutTracker = () => {
   const [selectedDay, setSelectedDay] = useState('Day 1 - Push');
   const [progress, setProgress] = useState({});
   const [setWeights, setSetWeights] = useState({});
-  const [cardio, setCardio] = useState({});
   const [isConnected, setIsConnected] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [userName, setUserName] = useState(localStorage.getItem('userName') || 'naman');
@@ -88,7 +87,6 @@ const WorkoutTracker = () => {
           const data = snapshot.val();
           setProgress(data.progress || {});
           setSetWeights(data.setWeights || {});
-          setCardio(data.cardio || {});
         }
         setIsConnected(true);
       }, (error) => {
@@ -157,30 +155,6 @@ const WorkoutTracker = () => {
         lastUpdated: new Date().toISOString(),
       });
     }
-  };
-
-  const updateCardio = (person, minutes) => {
-    const today = getTodayDateString();
-    const key = `${today}-${selectedDay}-${person}`;
-    
-    const newCardio = {
-      ...cardio,
-      [key]: minutes === '' || minutes === null ? null : minutes,
-    };
-    setCardio(newCardio);
-
-    if (sessionId) {
-      update(ref(database, `sessions/${sessionId}`), {
-        cardio: newCardio,
-        lastUpdated: new Date().toISOString(),
-      });
-    }
-  };
-
-  const getCardioData = (person) => {
-    const today = getTodayDateString();
-    const key = `${today}-${selectedDay}-${person}`;
-    return cardio[key] || null;
   };
 
   const resetDay = () => {
@@ -295,8 +269,6 @@ const WorkoutTracker = () => {
         akashPercent: totalSets > 0 ? Math.round((akashSets / totalSets) * 100) : 0,
         namanExercises,
         akashExercises,
-        namanCardio: cardio[namanCardioKey] || 0,
-        akashCardio: cardio[akashCardioKey] || 0,
       });
     }
 
@@ -659,12 +631,6 @@ const WorkoutTracker = () => {
                       </div>
                       <p className="text-xs text-gray-600 mb-3">{log.namanPercent}%</p>
                       
-                      {log.namanCardio > 0 && (
-                        <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-3">
-                          <p className="text-blue-900 text-xs font-medium">Cardio: {log.namanCardio} min</p>
-                        </div>
-                      )}
-                      
                       {log.namanExercises.length > 0 && (
                         <div className="space-y-2 text-xs border-t border-gray-200 pt-3">
                           {log.namanExercises.map((ex, i) => (
@@ -690,12 +656,6 @@ const WorkoutTracker = () => {
                         ></div>
                       </div>
                       <p className="text-xs text-gray-600 mb-3">{log.akashPercent}%</p>
-                      
-                      {log.akashCardio > 0 && (
-                        <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-3">
-                          <p className="text-blue-900 text-xs font-medium">Cardio: {log.akashCardio} min</p>
-                        </div>
-                      )}
                       
                       {log.akashExercises.length > 0 && (
                         <div className="space-y-2 text-xs border-t border-gray-200 pt-3">
