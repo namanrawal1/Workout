@@ -165,7 +165,7 @@ const WorkoutTracker = () => {
     
     const newCardio = {
       ...cardio,
-      [key]: duration > 0 ? duration : null,
+      [key]: duration || duration === 0 ? duration : null,
     };
     setCardio(newCardio);
 
@@ -180,7 +180,7 @@ const WorkoutTracker = () => {
   const getCardioData = (person) => {
     const today = getTodayDateString();
     const key = `${today}-${selectedDay}-${person}`;
-    return cardio[key] || 0;
+    return cardio[key] !== undefined ? cardio[key] : 0;
   };
 
   const resetDay = () => {
@@ -629,7 +629,7 @@ const WorkoutTracker = () => {
                     <button
                       onClick={() => updateCardio('naman', 0)}
                       className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('naman') === 0
+                        getCardioData('naman') === 0 || getCardioData('naman') === null
                           ? 'bg-black text-white'
                           : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
@@ -637,9 +637,13 @@ const WorkoutTracker = () => {
                       Skip
                     </button>
                     <button
-                      onClick={() => updateCardio('naman', 1)}
+                      onClick={() => {
+                        if (getCardioData('naman') === 0 || getCardioData('naman') === null) {
+                          updateCardio('naman', '');
+                        }
+                      }}
                       className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('naman') > 0
+                        getCardioData('naman') && getCardioData('naman') !== 0
                           ? 'bg-black text-white'
                           : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
@@ -670,7 +674,7 @@ const WorkoutTracker = () => {
                     <button
                       onClick={() => updateCardio('akash', 0)}
                       className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('akash') === 0
+                        getCardioData('akash') === 0 || getCardioData('akash') === null
                           ? 'bg-black text-white'
                           : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
@@ -678,9 +682,13 @@ const WorkoutTracker = () => {
                       Skip
                     </button>
                     <button
-                      onClick={() => updateCardio('akash', 1)}
+                      onClick={() => {
+                        if (getCardioData('akash') === 0 || getCardioData('akash') === null) {
+                          updateCardio('akash', '');
+                        }
+                      }}
                       className={`flex-1 py-3 rounded-lg font-medium transition ${
-                        getCardioData('akash') > 0
+                        getCardioData('akash') && getCardioData('akash') !== 0
                           ? 'bg-black text-white'
                           : 'bg-white border border-gray-300 text-black hover:border-gray-400'
                       }`}
